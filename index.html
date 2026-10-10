@@ -366,4 +366,161 @@
                                 <span class="text-neon-cyan font-heading font-bold">20:00 Uhr</span>
                             </div>
                             <div class="flex justify-between items-center p-3 rounded-xl bg-cyber-950/60 border border-neon-cyan/10">
-                                <span class="text-gray-300 font-bold">
+                                <span class="text-gray-300 font-bold">Samstag</span>
+                                <span class="text-neon-cyan font-heading font-bold">19:00 Uhr</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 rounded-xl bg-cyber-950/60 border border-neon-cyan/10">
+                                <span class="text-gray-300 font-bold">Sonntag</span>
+                                <span class="text-neon-cyan font-heading font-bold">18:30 Uhr</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Guestbook Section -->
+    <section id="guestbook" class="py-24 bg-cyber-950 border-t border-neon-cyan/10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12">
+                <span class="text-neon-cyan font-bold text-sm tracking-widest uppercase">Community & Support</span>
+                <h2 class="font-heading font-bold text-4xl text-white mt-1">FAN GÄSTEBUCH</h2>
+                <p class="text-gray-400 text-sm mt-2">Hinterlasse Antepli27 eine Nachricht oder deine PSN-ID!</p>
+            </div>
+
+            <div class="glass-card p-6 sm:p-8 rounded-3xl border border-neon-cyan/20 mb-10">
+                <form id="gb-form" onsubmit="addGuestbookEntry(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-neon-cyan uppercase mb-1">Dein Name / Gamer Tag</label>
+                        <input type="text" id="gb-name" required placeholder="z. B. GamerPro99" class="w-full bg-cyber-950 border border-neon-cyan/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-neon-cyan transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-neon-cyan uppercase mb-1">Deine Nachricht</label>
+                        <textarea id="gb-message" required rows="3" placeholder="Schreibe deine Nachricht..." class="w-full bg-cyber-950 border border-neon-cyan/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-neon-cyan transition"></textarea>
+                    </div>
+                    <button type="submit" class="w-full cyber-btn text-cyber-950 font-heading font-bold py-3.5 rounded-xl transition shadow-lg">
+                        Nachricht Absenden
+                    </button>
+                </form>
+            </div>
+
+            <div id="gb-entries-list" class="space-y-4"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-cyber-950 border-t border-neon-cyan/20 py-12 text-sm text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <span class="font-heading font-black text-xl text-white">ANTEPLI<span class="text-neon-cyan">27</span></span>
+            </div>
+            
+            <div class="flex gap-6 font-semibold">
+                <a href="#socials" class="hover:text-neon-cyan transition">PSN: Antepli27</a>
+                <a href="https://youtube.com" target="_blank" class="hover:text-neon-cyan transition">YouTube: Antepli_27</a>
+                <a href="https://twitch.tv/Antepli_80" target="_blank" class="hover:text-neon-cyan transition">Twitch: Antepli_80</a>
+            </div>
+
+            <p class="text-xs text-gray-500">&copy; 2026 Antepli27 Gaming Community. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('PSN ID "' + text + '" wurde in die Zwischenablage kopiert!');
+            }).catch(() => {
+                alert('PSN ID: ' + text);
+            });
+        }
+
+        function startCountdown() {
+            let hours = 18, mins = 45, secs = 30;
+            setInterval(() => {
+                if (secs > 0) {
+                    secs--;
+                } else {
+                    secs = 59;
+                    if (mins > 0) {
+                        mins--;
+                    } else {
+                        mins = 59;
+                        if (hours > 0) hours--;
+                    }
+                }
+                const h = document.getElementById('cd-hours');
+                const m = document.getElementById('cd-mins');
+                const s = document.getElementById('cd-secs');
+                if (h) h.innerText = hours < 10 ? '0' + hours : hours;
+                if (m) m.innerText = mins < 10 ? '0' + mins : mins;
+                if (s) s.innerText = secs < 10 ? '0' + secs : secs;
+            }, 1000);
+        }
+
+        const defaultMessages = [
+            { name: "GamerBro_TR", message: "Starker Live Stream gestern! Die Warzone Siege waren heftig! 🔥", date: "Vor 1 Stunde" },
+            { name: "PS5_Squad", message: "Habe dich auf PSN geaddet (Antepli27). Lass mal am Wochenende FC 27 zocken!", date: "Vor 4 Stunden" }
+        ];
+
+        function loadGuestbook() {
+            const stored = localStorage.getItem('antepli27_gb');
+            const entries = stored ? JSON.parse(stored) : defaultMessages;
+            const container = document.getElementById('gb-entries-list');
+
+            if (!container) return;
+            container.innerHTML = '';
+            entries.forEach(entry => {
+                const card = document.createElement('div');
+                card.className = 'glass-card p-4 rounded-2xl border border-neon-cyan/10';
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="font-heading font-bold text-neon-cyan text-sm">${escapeHTML(entry.name)}</span>
+                        <span class="text-[10px] text-gray-500">${entry.date}</span>
+                    </div>
+                    <p class="text-gray-300 text-sm">${escapeHTML(entry.message)}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function addGuestbookEntry(e) {
+            e.preventDefault();
+            const name = document.getElementById('gb-name').value;
+            const message = document.getElementById('gb-message').value;
+
+            const stored = localStorage.getItem('antepli27_gb');
+            const entries = stored ? JSON.parse(stored) : [...defaultMessages];
+
+            entries.unshift({ name, message, date: "Gerade eben" });
+            localStorage.setItem('antepli27_gb', JSON.stringify(entries));
+
+            document.getElementById('gb-name').value = '';
+            document.getElementById('gb-message').value = '';
+
+            loadGuestbook();
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        window.onload = function() {
+            startCountdown();
+            loadGuestbook();
+        };
+    </script>
+</body>
+</html>
